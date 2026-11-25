@@ -1,0 +1,618 @@
+/* ====================================================================
+   Cyber-Quantum Dark Theme (DESIGN.md Tokens)
+   Paleta HSL: Azul noche profundo, cian neón, acento dorado, violeta cuántico
+   ==================================================================== */
+
+:root {
+  /* Paleta Cuántica HSL */
+  --bg-dark-base: hsl(222, 38%, 6%);
+  --bg-dark-surface: hsl(222, 30%, 10%);
+  --bg-dark-elevated: hsl(222, 28%, 14%);
+  --bg-dark-card: hsla(222, 28%, 12%, 0.85);
+  
+  --border-subtle: hsla(215, 25%, 27%, 0.4);
+  --border-glow: hsla(185, 96%, 50%, 0.35);
+  --border-gold: hsla(43, 96%, 56%, 0.4);
+
+  --text-main: hsl(210, 24%, 95%);
+  --text-muted: hsl(215, 18%, 70%);
+  --text-dim: hsl(215, 15%, 50%);
+
+  /* Acentos cuánticos */
+  --quantum-cyan: hsl(185, 96%, 53%);
+  --quantum-cyan-glow: hsla(185, 96%, 53%, 0.25);
+  --quantum-gold: hsl(43, 96%, 56%);
+  --quantum-gold-glow: hsla(43, 96%, 56%, 0.22);
+  --quantum-violet: hsl(265, 85%, 65%);
+  --quantum-pink: hsl(325, 85%, 60%);
+  --quantum-green: hsl(150, 75%, 48%);
+  --classical-orange: hsl(25, 95%, 58%);
+
+  /* Tipografías */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Transiciones */
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark-base);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at 15% 15%, hsla(185, 96%, 53%, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, hsla(265, 85%, 65%, 0.04) 0%, transparent 45%);
+}
+
+/* ================= Header ================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  background-color: hsla(222, 38%, 7%, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.quantum-badge {
+  background: linear-gradient(135deg, var(--quantum-cyan), var(--quantum-violet));
+  color: #000;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--quantum-cyan-glow);
+}
+
+.title-group h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background-color: hsla(185, 96%, 53%, 0.15);
+  color: var(--quantum-cyan);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-glow);
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.header-status-panel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.finops-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--bg-dark-surface);
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--quantum-green);
+  box-shadow: 0 0 8px var(--quantum-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ================= Botones & Controles ================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, hsl(185, 90%, 42%), hsl(195, 95%, 48%));
+  color: #000;
+  font-weight: 600;
+  box-shadow: 0 4px 14px var(--quantum-cyan-glow);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-dark-elevated);
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background-color: hsla(222, 28%, 20%, 1);
+  border-color: var(--border-glow);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, hsl(43, 90%, 45%), hsl(35, 95%, 52%));
+  color: #000;
+  font-weight: 600;
+  box-shadow: 0 4px 14px var(--quantum-gold-glow);
+}
+
+.btn-gold:hover {
+  filter: brightness(1.15);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+}
+
+/* ================= Layout Principal ================= */
+.app-container {
+  display: grid;
+  grid-template-columns: 320px 1fr 340px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar-panel {
+  background-color: var(--bg-dark-surface);
+  border-right: 1px solid var(--border-subtle);
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-panel {
+  background-color: var(--bg-dark-surface);
+  border-left: 1px solid var(--border-subtle);
+  border-right: none;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.main-stage {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  gap: 20px;
+  background-color: var(--bg-dark-base);
+}
+
+/* ================= Componentes / Cards ================= */
+.card-section {
+  background-color: var(--bg-dark-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title svg {
+  color: var(--quantum-cyan);
+}
+
+.control-group {
+  margin-bottom: 14px;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.select-input, .text-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--bg-dark-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.select-input:focus, .text-input:focus {
+  border-color: var(--quantum-cyan);
+  box-shadow: 0 0 8px var(--quantum-cyan-glow);
+}
+
+.range-input {
+  width: 100%;
+  accent-color: var(--quantum-cyan);
+  cursor: pointer;
+}
+
+/* Segmented switch buttons */
+.segmented-control {
+  display: flex;
+  background-color: var(--bg-dark-elevated);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  gap: 2px;
+}
+
+.segmented-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.segmented-btn.active {
+  background-color: var(--quantum-cyan);
+  color: #000;
+  font-weight: 600;
+  box-shadow: 0 2px 8px var(--quantum-cyan-glow);
+}
+
+/* ================= Visualizador de Grafos y Probabilidad ================= */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  background-color: hsla(222, 38%, 4%, 0.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+#graphCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.canvas-overlay-stats {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background-color: hsla(222, 30%, 8%, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text-muted);
+}
+
+.canvas-overlay-stats .stat-highlight {
+  color: var(--quantum-cyan);
+  font-weight: 600;
+}
+
+.canvas-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background-color: var(--bg-dark-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ================= Comparador Cuántico vs Clásico ================= */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.comparator-card {
+  background-color: var(--bg-dark-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comparator-card.classical {
+  border-top: 3px solid var(--classical-orange);
+}
+
+.comparator-card.quantum {
+  border-top: 3px solid var(--quantum-cyan);
+}
+
+.comparator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.comparator-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comparator-title.classical { color: var(--classical-orange); }
+.comparator-title.quantum { color: var(--quantum-cyan); }
+
+.comparator-formula {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.chart-container {
+  height: 140px;
+  width: 100%;
+  position: relative;
+}
+
+/* ================= Métricas y Resultados ================= */
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid hsla(215, 25%, 27%, 0.2);
+  font-size: 0.82rem;
+}
+
+.metric-row:last-child {
+  border-bottom: none;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--quantum-cyan);
+}
+
+.metric-value.gold {
+  color: var(--quantum-gold);
+}
+
+/* ================= Inspector de Código y Circuitos ================= */
+.code-container {
+  background-color: hsl(222, 45%, 4%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: hsl(210, 20%, 85%);
+  overflow-x: auto;
+  max-height: 220px;
+  white-space: pre;
+  line-height: 1.4;
+}
+
+/* ================= Tabs ================= */
+.tab-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  padding: 6px 0;
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+}
+
+.tab-btn.active {
+  color: var(--quantum-cyan);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--quantum-cyan);
+  box-shadow: 0 0 8px var(--quantum-cyan);
+}
+
+/* ================= Modal de Exportación ================= */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(222, 50%, 5%, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-window {
+  background-color: var(--bg-dark-surface);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  width: 680px;
+  max-width: 92vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ================= Footer ================= */
+.app-footer {
+  padding: 10px 28px;
+  background-color: var(--bg-dark-surface);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.footer-credits a {
+  color: var(--quantum-cyan);
+  text-decoration: none;
+}
+
+/* ================= Responsividad ================= */
+@media (max-width: 1200px) {
+  .app-container {
+    grid-template-columns: 290px 1fr;
+  }
+  .right-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+  .sidebar-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}

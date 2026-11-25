@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Walk Graph Intelligence Explorer | Codex</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos con variables HSL -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Encabezado de la Aplicación -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="quantum-badge" title="Algoritmos Cuánticos de Caminata Aleatoria">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"></path>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.08M8.46 15.54a5 5 0 0 1 0-7.08"></path>
+        </svg>
+      </div>
+      <div class="title-group">
+        <h1>
+          Quantum Walk Graph Intelligence
+          <span class="version-pill">v1.0.0</span>
+        </h1>
+        <p class="subtitle">Laboratorio de Caminatas Cuánticas (DTQW & CTQW), Difusión vs Propagación Balística y Búsqueda en Grafos</p>
+      </div>
+    </div>
+
+    <div class="header-status-panel">
+      <div class="finops-badge" title="Monitoreo FinOps de Cuota Gratuita">
+        <span class="pulse-dot"></span>
+        <span>FinOps: <strong>10.00 min IBM-Q</strong> (Gratuito 0.00 USD)</span>
+      </div>
+      <div class="header-actions">
+        <button id="btnOpenExportModal" class="btn btn-secondary btn-sm" title="Exportar circuito o transpilación OpenQASM">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+          Exportar QASM 3.0
+        </button>
+        <button id="btnRunHybridJob" class="btn btn-primary btn-sm" title="Simular despacho de trabajo cuántico híbrido">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Ejecutar Híbrido
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal (Grid Layout) -->
+  <main class="app-container">
+    
+    <!-- Panel Lateral Izquierdo: Configuración del Grafo y Operadores Cuánticos -->
+    <aside class="sidebar-panel">
+      <section class="card-section">
+        <div class="section-title">
+          <span>Topología del Grafo</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="18" cy="18" r="3"></circle>
+            <line x1="8.5" y1="8.5" x2="15.5" y2="15.5"></line>
+          </svg>
+        </div>
+
+        <div class="control-group">
+          <label for="selectTopology" class="control-label">Familia de Grafo</label>
+          <select id="selectTopology" class="select-input">
+            <option value="glued-trees">Árboles Pegados (Glued Trees) - Aceleración O(t)</option>
+            <option value="hypercube">Hipercubo Booleano Q4 (16 nodos)</option>
+            <option value="line">Línea 1D (Difusión vs Balística)</option>
+            <option value="cycle">Ciclo / Anillo (16 nodos)</option>
+            <option value="barabasi">Barabási-Albert (Libre de escala)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="selectStartNode" class="control-label">Nodo de Origen |v₀⟩</label>
+          <select id="selectStartNode" class="select-input">
+            <!-- Nodos generados dinámicamente -->
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="selectMarkedTarget" class="control-label">Nodo Objetivo (Búsqueda Cuántica)</label>
+          <select id="selectMarkedTarget" class="select-input">
+            <option value="none">Sin oráculo (Paseo puro)</option>
+            <!-- Opciones dinámicas -->
+          </select>
+        </div>
+      </section>
+
+      <section class="card-section">
+        <div class="section-title">
+          <span>Dinámica y Operadores</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Modo de Caminata</label>
+          <div class="segmented-control" id="modeSelector">
+            <button class="segmented-btn active" data-mode="DTQW">Tiempo Discreto (DTQW)</button>
+            <button class="segmented-btn" data-mode="CTQW">Continuo (CTQW)</button>
+          </div>
+        </div>
+
+        <div id="coinControlGroup" class="control-group">
+          <label for="selectCoin" class="control-label">Operador de Moneda (Coin)</label>
+          <select id="selectCoin" class="select-input">
+            <option value="Grover">Moneda de Grover (Inversión sobre la media)</option>
+            <option value="Hadamard">Hadamard (Superposición simétrica)</option>
+            <option value="Fourier">Transformada de Fourier Cuántica (QFT)</option>
+          </select>
+        </div>
+
+        <div id="hamiltonianControlGroup" class="control-group" style="display: none;">
+          <label for="selectHamiltonian" class="control-label">Hamiltoniano H (CTQW)</label>
+          <select id="selectHamiltonian" class="select-input">
+            <option value="Adjacency">Matriz de Adyacencia A</option>
+            <option value="Laplacian">Laplaciano del Grafo L = D - A</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Velocidad de Simulación</span>
+            <span id="labelSpeed">300 ms</span>
+          </div>
+          <input type="range" id="rangeSpeed" class="range-input" min="50" max="800" step="25" value="300">
+        </div>
+      </section>
+
+      <section class="card-section">
+        <div class="section-title">
+          <span>Inteligencia de Grafos</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          </svg>
+        </div>
+
+        <button id="btnComputeCentrality" class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;">
+          Calcular Centralidad Cuántica
+        </button>
+        <button id="btnDetectCommunities" class="btn btn-secondary" style="width: 100%;">
+          Detección de Comunidades
+        </button>
+      </section>
+    </aside>
+
+    <!-- Escenario Central: Lienzo Interactivo y Comparador Lado a Lado -->
+    <section class="main-stage">
+      
+      <!-- Lienzo del Grafo con Superposición de Amplitudes -->
+      <div class="canvas-wrapper">
+        <canvas id="graphCanvas"></canvas>
+        
+        <div class="canvas-overlay-stats">
+          <div>Topología: <span id="statTopologyName" class="stat-highlight">Árboles Pegados</span></div>
+          <div>Paso / Tiempo: <span id="statStep" class="stat-highlight">0</span></div>
+          <div>Entropía Cuántica: <span id="statEntropy" class="stat-highlight">0.00 bits</span></div>
+          <div>Probabilidad Máxima: <span id="statMaxProb" class="stat-highlight">100.0%</span></div>
+        </div>
+      </div>
+
+      <!-- Barra de Controles de Reproducción -->
+      <div class="canvas-controls-bar">
+        <div class="playback-controls">
+          <button id="btnPlayPause" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span id="lblPlayPause">Iniciar Simulación</span>
+          </button>
+          <button id="btnStepForward" class="btn btn-secondary btn-sm" title="Avanzar un solo paso">
+            Paso +1
+          </button>
+          <button id="btnResetSimulation" class="btn btn-secondary btn-sm" title="Reiniciar al estado base">
+            Reiniciar
+          </button>
+        </div>
+
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          Haz clic en cualquier nodo para seleccionarlo como origen o inspeccionar su amplitud cuántica.
+        </div>
+      </div>
+
+      <!-- Comparador Lado a Lado: Clásico (Browniano) vs Cuántico (Balístico) -->
+      <div class="comparison-grid">
+        <!-- Tarjeta Clásica -->
+        <div class="comparator-card classical">
+          <div class="comparator-header">
+            <div class="comparator-title classical">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              Caminata Clásica (Browniana)
+            </div>
+            <span class="comparator-formula">Difusión Gaussiana σ ~ √t</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartClassical"></canvas>
+          </div>
+          <div class="metric-row">
+            <span>Dispersión / Varianza σ²(t):</span>
+            <span id="metricClassicalVariance" class="metric-value">0.00</span>
+          </div>
+        </div>
+
+        <!-- Tarjeta Cuántica -->
+        <div class="comparator-card quantum">
+          <div class="comparator-header">
+            <div class="comparator-title quantum">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Caminata Cuántica (Balística)
+            </div>
+            <span class="comparator-formula">Propagación Lineal σ ~ t</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartQuantum"></canvas>
+          </div>
+          <div class="metric-row">
+            <span>Aceleración Cuántica (Speedup):</span>
+            <span id="metricQuantumSpeedup" class="metric-value gold">O(√N) Acelerado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel Lateral Derecho: Inspector de Estados y Caché SQLite -->
+    <aside class="right-panel">
+      <!-- Inspector del Estado Cuántico Seleccionado -->
+      <section class="card-section">
+        <div class="section-title">
+          <span>Inspector de Amplitudes</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        
+        <div class="metric-row">
+          <span>Nodo Seleccionado:</span>
+          <span id="inspectNodeId" class="metric-value">Nodo 0</span>
+        </div>
+        <div class="metric-row">
+          <span>Probabilidad P(v):</span>
+          <span id="inspectNodeProb" class="metric-value">1.0000 (100.0%)</span>
+        </div>
+        <div class="metric-row">
+          <span>Grado en Grafo deg(v):</span>
+          <span id="inspectNodeDegree" class="metric-value">3</span>
+        </div>
+        <div class="metric-row">
+          <span>Fase Cuántica Media:</span>
+          <span id="inspectNodePhase" class="metric-value">0.000 rad</span>
+        </div>
+        <div class="metric-row">
+          <span>Centralidad Cuántica:</span>
+          <span id="inspectNodeCentrality" class="metric-value gold">0.842</span>
+        </div>
+      </section>
+
+      <!-- Circuito Cuántico Equivalente Transpilado -->
+      <section class="card-section">
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="qasm">OpenQASM 3.0</button>
+          <button class="tab-btn" data-tab="qiskit">Qiskit (Py)</button>
+          <button class="tab-btn" data-tab="cirq">Cirq</button>
+        </div>
+        <div class="code-container" id="codePreviewBox">// Cargando sintaxis de circuito OpenQASM 3.0...</div>
+      </section>
+
+      <!-- Persistencia determinista en SQLite Local -->
+      <section class="card-section">
+        <div class="section-title">
+          <span>Historial de Simulaciones (SQLite)</span>
+          <button id="btnClearHistory" class="btn btn-secondary btn-sm" style="padding: 2px 6px;">Limpiar</button>
+        </div>
+        <div id="runsHistoryList" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;">
+          <!-- Registros renderizados dinámicamente -->
+        </div>
+      </section>
+    </aside>
+
+  </main>
+
+  <!-- Modal para Exportación y Transpilación de Circuitos -->
+  <div id="exportModal" class="modal-backdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; color: #fff;">Exportador de Circuitos Cuánticos e Interoperabilidad</h3>
+        <button id="btnCloseExportModal" class="btn btn-secondary btn-sm" style="padding: 4px 8px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+          Este código está listo para ser ejecutado en simuladores locales de costo cero o enviado a los procesadores superconductores de IBM Quantum (vía Qiskit 1.x) y Google Quantum AI (Cirq).
+        </p>
+        <div class="code-container" id="modalFullCodeBox" style="max-height: 360px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCopyExportCode" class="btn btn-primary btn-sm">Copiar al Portapapeles</button>
+        <button id="btnDownloadExportCode" class="btn btn-gold btn-sm">Descargar Archivo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie de Página -->
+  <footer class="app-footer">
+    <div>Codex Portfolio — Capa 4 de Cómputo Cuántico Híbrido | Protocolo FinOps & OpenQASM 3.0</div>
+    <div class="footer-credits">
+      Desarrollado con arquitectura desacoplada SPA | Vanilla JS (ES2024) + HTML5 + CSS3 HSL
+    </div>
+  </footer>
+
+  <!-- Script Principal de la Aplicación -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
